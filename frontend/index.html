@@ -2431,10 +2431,21 @@
 
         // Check root status for ML model
         fetchAPI("/").then(rootData => {
-          document.getElementById("mlStatusText").textContent = (rootData.ml_model === "loaded" ? "ACTIVE" : "STANDBY");
-          document.getElementById("badgeML").textContent = (rootData.ml_model === "loaded" ? "ACTIVE" : "UNAVAILABLE");
-          document.getElementById("badgeML").style.borderColor = (rootData.ml_model === "loaded" ? "var(--green)" : "var(--yellow)");
-        }).catch(() => {});
+
+    const mlActive =
+        rootData.ml_model_status === "active" &&
+        rootData.ml_features === 25;
+
+    document.getElementById("mlStatusText").textContent =
+        mlActive ? "ACTIVE" : "STANDBY";
+
+    document.getElementById("badgeML").textContent =
+        mlActive ? "ACTIVE" : "UNAVAILABLE";
+
+    document.getElementById("badgeML").style.borderColor =
+        mlActive ? "var(--green)" : "var(--yellow)";
+
+}).catch(() => {});
 
       } catch (err) {
         console.error("Backend connection failed:", err);
